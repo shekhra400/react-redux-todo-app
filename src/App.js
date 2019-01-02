@@ -20,7 +20,7 @@ class App extends Component {
                   <Link className="nav-link" to={'/'}>Home</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to={'/post'}>Posts</Link>
+                  <Link className="nav-link" to={'/posts'}>Posts</Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to={'/contact'}>ContactUs</Link>
@@ -31,9 +31,8 @@ class App extends Component {
         </header>
           <Switch>
             <Route exact path='/' component={HomeComponent}/>
-            {/* both /roster and /roster/:number begin with /roster */}
+            <Route path='/posts' component={HomeComponent}/>
             <Route path='/post' component={PostComponent}/>
-            {/* <Route path='/schedule' component={Schedule}/> */}
           </Switch>
         </div>
       </BrowserRouter>

@@ -1,7 +1,10 @@
 import React from "react";
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link, Route } from 'react-router-dom';
 import { getAllPostsAction, saveAddData } from "../actions/commonAction";
+import PostComponent from '../PostComponent/PostComponent';
+
 
 export class HomeComponent extends React.Component {
   constructor(props){
@@ -65,7 +68,7 @@ export class HomeComponent extends React.Component {
   }
 
   render(){
-    const errorMsg = this.props.posts.error
+    const { error: errorMsg } = this.props.posts;
     return (
       <div>
         <h2>HomeComponent</h2>
@@ -98,17 +101,23 @@ export class HomeComponent extends React.Component {
           {errorMsg}
         </div>}
         <div className="container">
-          <ul className="list-group text-left row">
-            {
-              this.state.finalPosts.map((item,index) => {
-                return (<li className="list-group-item" key={item.id}>{item.title}
-                    <button onClick={() => this.deleteHandler(item.id)} type="button" className="close" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                </li>)
-              })
-            }
-          </ul>
+          <div className="row">
+            <ul className="list-group text-left col-md-6">
+              {
+                this.state.finalPosts.map((item,index) => {
+                  return (<li className="list-group-item" key={item.id}>
+                      <Link className="" to={'/posts/'+item.id}>{item.title}</Link>
+                      <button onClick={() => this.deleteHandler(item.id)} type="button" className="close" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                  </li>)
+                })
+              }
+            </ul>
+            <div className="col-md-6">
+              <Route exact path='/posts/:id' component={PostComponent}/>
+            </div>
+            </div>
           </div>
       </div>
     )
