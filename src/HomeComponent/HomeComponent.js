@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getAllPostsAction } from "../actions/commonAction";
+import { getAllPostsAction, saveAddData } from "../actions/commonAction";
 
 export class HomeComponent extends React.Component {
   constructor(props){
@@ -9,7 +9,12 @@ export class HomeComponent extends React.Component {
     this.state = {
       initialPosts:[],
       finalPosts:[],
-      error:null
+      error:null,
+      showAddForm: false,
+      form:{
+        title:'',
+        body:'',
+      }
     };
   }
 
@@ -41,16 +46,47 @@ export class HomeComponent extends React.Component {
 
     });
     this.setState({finalPosts:updatedPosts})
-    console.log(id);
+  }
+
+  addPostHandler = () => {
+    this.setState({showAddForm:true});
+  }
+
+  handleChange = (e)=> {
+    var form = this.state.form;
+    form[e.target.name] = e.target.value;
+    console.log(e.target.name)
+    this.setState({form:form});
+  }
+
+  submitFormHandler = (e) => {
+    e.preventDefault();
+    this.props.submitAddForm(this.state.form);
   }
 
   render(){
-    console.log('tanoy',this.props);
     const errorMsg = this.props.posts.error
     return (
       <div>
-        <h2>HomeComponent Header</h2>
-        <div>Item Counts : <span  className="font-weight-bold">{this.state.finalPosts.length}</span></div>
+        <h2>HomeComponent</h2>
+        <div>
+          Item Counts : <span  className="font-weight-bold">{this.state.finalPosts.length}</span>
+          <button onClick={this.addPostHandler}  type="button" className="btn btn-primary float-right mb-2">Add Post</button>
+        </div>
+        {this.state.showAddForm &&
+        <div className="">
+          <form onSubmit={this.handleSubmit}>
+            <div className="form-group">
+              <label>Title:</label>
+              <input type="text" name='title' className="form-control" value={this.state.form.title} onChange={this.handleChange} />
+            </div>
+            <div className="form-group">
+              <label>Body:</label>
+              <input type="text" name='body' className="form-control" value={this.state.form.body} onChange={this.handleChange} />
+            </div>
+            <input type="submit" value="Submit" className="btn btn-primary" onClick={this.submitFormHandler} />
+          </form>
+        </div>}
         <div className="input-group mb-3">
           <div className="input-group-prepend">
             <span className="input-group-text" id="basic-addon1">Search</span>
@@ -87,7 +123,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onComponentMount : () => { dispatch(getAllPostsAction()) }
+    onComponentMount : () => { dispatch(getAllPostsAction()) },
+    submitAddForm:(formData) => {dispatch(saveAddData(formData))}
   }
 }
 
