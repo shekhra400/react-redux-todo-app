@@ -27,7 +27,8 @@ export class HomeComponent extends React.Component {
 
   componentWillReceiveProps(nextProps){
     if(this.props.posts !== nextProps.posts){
-      this.setState({initialPosts:nextProps.posts.data,finalPosts:nextProps.posts.data})
+      const { data } = nextProps.posts;
+      this.setState({initialPosts: data, finalPosts: data})
     }
   }
 
@@ -58,13 +59,17 @@ export class HomeComponent extends React.Component {
   handleChange = (e)=> {
     var form = this.state.form;
     form[e.target.name] = e.target.value;
-    console.log(e.target.name)
     this.setState({form:form});
   }
 
   submitFormHandler = (e) => {
     e.preventDefault();
     this.props.submitAddForm(this.state.form);
+    this.setState({showAddForm:false, form:{
+      title:'',
+      body:'',
+    }});
+    
   }
 
   render(){

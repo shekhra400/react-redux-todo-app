@@ -9,9 +9,10 @@ import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.css';
 import rootReducers from './rootReducers';
 import rootSaga from "./rootSaga";
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 const sagaMiddleware = createSagaMiddleware();
- var store = createStore(rootReducers,applyMiddleware(sagaMiddleware));
+ var store = createStore(rootReducers,composeWithDevTools(applyMiddleware(sagaMiddleware)));
  sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(<Provider store={store} ><App /></Provider>, document.getElementById('root'));

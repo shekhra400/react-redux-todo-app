@@ -5,7 +5,9 @@ import {  FETCH_ALL_POST_ACTION,
           SAVE_ADD_DATA,
           FETCH_CURRENT_POST_ACTION,
           FETCH_CURRENT_POST_ACTION_SUCCESS,
-          FETCH_CURRENT_POST_ACTION_ERROR
+          FETCH_CURRENT_POST_ACTION_ERROR,
+          ADD_POST_ACTION_ERROR,
+          ADD_POST_ACTION_SUCCESS
 } from "../constants";
 
 export function getAllPostsAction(payload){
@@ -25,6 +27,20 @@ export function fetchPostsSuccess(data){
 export function fetchPostsError(error){
   return {
     type: FETCH_ALL_POST_ACTION_ERROR,
+    error
+  }
+}
+
+export function addPostsSuccess(data){
+  return {
+    type: ADD_POST_ACTION_SUCCESS,
+    data
+  }
+}
+
+export function addPostsError(error){
+  return {
+    type: ADD_POST_ACTION_ERROR,
     error
   }
 }

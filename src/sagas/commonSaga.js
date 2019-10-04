@@ -7,12 +7,17 @@ import {  FETCH_ALL_POST_ACTION,
   API_ENDPOINT_DUMMY_BASE_URL
 } from "../constants";
 
-import { fetchPostsSuccess, fetchPostsError,
-   getCurrentPostsActionSuccess, getCurrentPostsActionError } from "../actions/commonAction";
+import { fetchPostsSuccess,
+   fetchPostsError,
+   getCurrentPostsActionSuccess, 
+   getCurrentPostsActionError,
+   addPostsSuccess,
+   addPostsError,
+  } from "../actions/commonAction";
 
 
 export function fetchPosts() {
-  return axios.get(API_ENDPOINT_DUMMY_BASE_URL + 'posts?_limit=15');
+  return axios.get(API_ENDPOINT_DUMMY_BASE_URL + 'posts?_limit=10');
 };
 
 export function fetchCurrentPost(id) {
@@ -20,7 +25,7 @@ export function fetchCurrentPost(id) {
 };
 
 export function savePosts(formData) {
-  return axios.post(API_ENDPOINT_DUMMY_BASE_URL + 'posts', {userId:1,...formData});
+  return axios.post(API_ENDPOINT_DUMMY_BASE_URL + 'posts', {userId:1,id:108,...formData});
 }
 
 function* postsSagaWatcher(actions){
@@ -42,12 +47,12 @@ export function* postsSaga(){
 function* addPostsSagaWatcher(actions){
   try {
     const response = yield call(savePosts,actions.formData);
-    if (response.status === 200) {
-        return yield put(fetchPostsSuccess(response.data));
+    if (response.status === 200 || response.status === 201) {
+        return yield put(addPostsSuccess(response.data));
     }
-      return yield put(fetchPostsError(response.error));
+      return yield put(addPostsError(response.error));
   } catch (err) {
-    return yield put(fetchPostsError(err.message));
+    return yield put(addPostsError(err.message));
   }
 }
 

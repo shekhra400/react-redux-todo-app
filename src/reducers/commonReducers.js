@@ -4,7 +4,9 @@ import {  FETCH_ALL_POST_ACTION,
         FETCH_ALL_POST_ACTION_ERROR,
         FETCH_CURRENT_POST_ACTION,
         FETCH_CURRENT_POST_ACTION_ERROR,
-        FETCH_CURRENT_POST_ACTION_SUCCESS
+        FETCH_CURRENT_POST_ACTION_SUCCESS,
+        ADD_POST_ACTION_ERROR,
+        ADD_POST_ACTION_SUCCESS
         } from "../constants";
 
 
@@ -22,6 +24,14 @@ import {  FETCH_ALL_POST_ACTION,
     case FETCH_ALL_POST_ACTION_ERROR:
         updatedState = Object.assign({}, state, { isFetching: false,error:action.error });
         break;
+   case ADD_POST_ACTION_SUCCESS:
+         const { data } = action;
+         // console.log(finalState);
+         updatedState = Object.assign({}, state, { isFetching: false,data: [...state.data, data] });
+         break;
+   case ADD_POST_ACTION_ERROR:
+         updatedState = Object.assign({}, state, { isFetching: false,error:action.error });
+         break;
      default:
         updatedState = state;
         break;
